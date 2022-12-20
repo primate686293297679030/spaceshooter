@@ -1,24 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
-public class EnemySystem : ComponentSystem
+public partial class EnemySystem : SystemBase
 {
-  
+    
+    private Vector3 posAVector3;
+    private Vector3 posBvVector3;
+    private float dT;
+    private int velocity;
+    private float3 playerPos;
+    private Entity playerEntity;
+    protected override void OnStartRunning()
+    {
+        playerEntity = World.GetExistingSystem<MoveSystem>().playerEntity;
+        
+    }
 
     protected override void OnUpdate()
     {
-        Debug.Log("is updated");
-        
-        Entities.ForEach((ref EnemyComponent enemyComponent) =>
+        //ref LocalToWorld ltw2
+        //float3(ltw.Value.c0.x, ltw.Value.c0.y, ltw.Value.c0.z);
+
+
+
+        float3 dest = EntityManager.GetComponentData<Translation>(playerEntity).Value;
+        float dT = Time.DeltaTime;
+        Entities.ForEach((ref Translation translation,ref EnemyComponent enemyComponent) =>
         {
 
+           // posAVector3 = translation.Value;
+           float3 origin = translation.Value;
+           // float3 dot = math.dot(posA, posB);
+           //float3 cross= math.cross(posA, posB);
+            //float3 dist = math.distance(posA, posB); 
+    
+            // Vector3.RotateTowards(posAVector3, posBvVector3, dT * velocity, 0.0f);
+            //  Debug.DrawLine(new Vector3(wtl.Value.c0.x, wtl.Value.c0.y, wtl.Value.c0.z),new Vector3(playerPos.x,playerPos.y,playerPos.z));
+            //math.rotate(enemyQuat, math.normalize(playerPos))
+            translation.Value +=math.normalize(dest- origin) * dT;
 
-            enemyComponent.health += 1f * Time.DeltaTime;
-            //Debug.Log(testComponent.Health);
-        });
+           // Debug.Log(origin + " Origin");
+            //Debug.Log(dest + " Destination");
 
-        //throw new System.NotImplementedException();
+            //  posA = new float3(ltw2.Value.c0.x, ltw2.Value.c0.y, ltw2.Value.c0.z);
+
+        }).Schedule();
+
+       
     }
 }
