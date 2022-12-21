@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using Unity.Burst;
 
 [GenerateAuthoringComponent]
 public struct PlayerComponent : IComponentData
@@ -58,6 +59,12 @@ public struct LevelComponent : IComponentData
     public int wave;
     public int enemies; 
 
+
+
+
+}
+public struct isDeadTag: IComponentData
+{
 
 
 

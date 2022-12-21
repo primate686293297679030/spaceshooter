@@ -7,13 +7,21 @@ using UnityEngine;
 public partial class MoveSystem : SystemBase
 {
     public Entity playerEntity;
+    public Entity GameHandlerEntity;
     protected override void OnStartRunning()
     {
         EntityManager em = World.DefaultGameObjectInjectionWorld.EntityManager;
          playerEntity =EntityManager.Instantiate( GetSingleton<PlayerPrefabComponent>().PlayerPrefab);
-      
+       
 
-       em.AddComponentData(playerEntity, new PlayerComponent()
+        GameHandlerEntity = EntityManager.Instantiate(GetSingleton<EntityGameHandler>().GameHandlerPrefab);
+        em.AddComponentData(GameHandlerEntity, new LevelComponent
+        {
+            wave = 1,
+            enemies=10,
+        }) ;
+
+        em.AddComponentData(playerEntity, new PlayerComponent()
        {
           entityHandle = playerEntity,
        });
@@ -44,6 +52,6 @@ public partial class WaveManager : SystemBase
         Entities.ForEach((ref LevelComponent lvlcomponent) =>
         {
 
-        });
+        }).Run();
     }
 }

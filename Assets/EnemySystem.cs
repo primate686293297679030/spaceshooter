@@ -7,17 +7,25 @@ using UnityEngine;
 
 public partial class EnemySystem : SystemBase
 {
-    
+
     private Vector3 posAVector3;
     private Vector3 posBvVector3;
     private float dT;
     private int velocity;
     private float3 playerPos;
     private Entity playerEntity;
+        private Entity gameHandlerEntity;
+    LevelComponent lvl;
+    protected override void OnCreate()
+    {
+       
+    }
     protected override void OnStartRunning()
     {
         playerEntity = World.GetExistingSystem<MoveSystem>().playerEntity;
-        
+        gameHandlerEntity= World.GetExistingSystem<MoveSystem>().GameHandlerEntity;
+        lvl=EntityManager.GetComponentData<LevelComponent>(gameHandlerEntity);
+
     }
 
     protected override void OnUpdate()
@@ -25,10 +33,22 @@ public partial class EnemySystem : SystemBase
         //ref LocalToWorld ltw2
         //float3(ltw.Value.c0.x, ltw.Value.c0.y, ltw.Value.c0.z);
 
+    
 
 
         float3 dest = EntityManager.GetComponentData<Translation>(playerEntity).Value;
         float dT = Time.DeltaTime;
+
+    
+
+        Entities.WithStructuralChanges().ForEach((Entity e , ref EnemyComponent ec, ref isDeadTag tag) =>
+        {
+          EntityManager.DestroyEntity(e);
+            lvl.enemies -= 1;
+            Debug.Log(lvl.enemies);
+
+        }).Run();
+        
         Entities.ForEach((ref Translation translation,ref EnemyComponent enemyComponent) =>
         {
 

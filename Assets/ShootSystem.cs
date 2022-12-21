@@ -15,7 +15,8 @@ public partial class ShootSystem : SystemBase
     private PlayerComponent playerComponent;
     private ShootingComponent shootingComponent;
     private Entity playerEntity;
-    private bool shooting; 
+    private bool shooting;
+    private float spawnTimer;
     protected override void OnStartRunning()
     {
         Entities.WithoutBurst().ForEach((ref PlayerComponent player) =>
@@ -60,25 +61,32 @@ public partial class ShootSystem : SystemBase
         if (shooting)
         {
 
-        spawnedEntity = EntityManager.Instantiate(projectilePrefab.prefabEntity);
-            EntityManager.AddComponentData(spawnedEntity, new ProjectileComponent()
-            {
-                position = playerComponent.position,
-                velocity = new Vector3(Input.GetAxisRaw("Fire2"), Input.GetAxisRaw("Fire1"), 0),
-                
-             
-            damage = 10,
-                entity = spawnedEntity
-            } );
-            EntityManager.AddComponentData(spawnedEntity, new Translation()
+            spawnTimer -= Time.DeltaTime;
+
+            if (spawnTimer <= 0f)
             {
 
-            });
 
-            EntityManager.SetName(spawnedEntity, "Projectile");
-            EntitiesList.Add(spawnedEntity);
+                spawnTimer = .2f;
+                spawnedEntity = EntityManager.Instantiate(projectilePrefab.prefabEntity);
+                EntityManager.AddComponentData(spawnedEntity, new ProjectileComponent()
+                {
+                    position = playerComponent.position,
+                    velocity = new Vector3(Input.GetAxisRaw("Fire2"), Input.GetAxisRaw("Fire1"), 0),
 
 
+                    damage = 10,
+                    entity = spawnedEntity
+                });
+                EntityManager.AddComponentData(spawnedEntity, new Translation()
+                {
+
+                });
+
+                EntityManager.SetName(spawnedEntity, "Projectile");
+                EntitiesList.Add(spawnedEntity);
+
+            }
         }
 
 
