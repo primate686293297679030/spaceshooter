@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Transforms;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEditor.Build.Content;
 
 public partial class MoveSystem : SystemBase
 {
@@ -19,7 +22,7 @@ public partial class MoveSystem : SystemBase
         {
             wave = 1,
             enemies=10,
-        }) ;
+        });
 
         em.AddComponentData(playerEntity, new PlayerComponent()
        {
@@ -29,6 +32,15 @@ public partial class MoveSystem : SystemBase
        {
            
        });
+        em.SetComponentData(playerEntity, new Translation
+        {
+            Value = math.float3(0, 1, 0)
+        });
+        
+        em.SetComponentData(playerEntity, new LocalToWorld 
+        {
+            Value=         math.float4x4(0,0,0,0)  
+        }) ;
     }
 
     protected override void OnUpdate()
@@ -38,7 +50,15 @@ public partial class MoveSystem : SystemBase
            
             translation.Value.x += Input.GetAxisRaw("Horizontal") * Time.DeltaTime*3;
             translation.Value.y += Input.GetAxisRaw("Vertical") * Time.DeltaTime*3;
+            translation.Value.z = 0;
             playerComponent.position = translation.Value;
+
+        }).Run();
+
+        Entities.WithoutBurst().ForEach((PlayerComponent playerComponent, isDeadTag ded) =>
+        {
+
+
 
         }).Run();
 

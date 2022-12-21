@@ -103,10 +103,32 @@ public partial class CollisionTriggers : SystemBase
 
             }
 
+            if (allPlayers.HasComponent(entityA) && allEnemies.HasComponent(entityB))
+            {
+
+
+                entityCommandBuffer.AddComponent(entityA, new isDeadTag());
+                Debug.Log("projectile destroyed");
+                entityCommandBuffer.DestroyEntity(entityB);
+                //entityCommandBuffer.DestroyEntity(entityB);
+
+
+            }
+
+
+            else if (allEnemies.HasComponent(entityA) && allPlayers.HasComponent(entityB))
+            {
+                Debug.Log("projectile destroyed2");
+                entityCommandBuffer.AddComponent(entityB, new isDeadTag());
+                entityCommandBuffer.DestroyEntity(entityA);
+                //  entityCommandBuffer.DestroyEntity(entityA);
+
+            }
+
 
         }
 
-       
+
 
 
     }

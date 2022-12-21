@@ -14,8 +14,24 @@ public struct EntityGameHandler : IComponentData
 
 }
 
+public class GameManager:MonoBehaviour
+{
+    EntityManager em = World.DefaultGameObjectInjectionWorld.EntityManager;
+    Entity gameHandlerEntity;
+    private void Start()
+    {
+      
+     
+
+    }
+    private void Update()
+    {
 
 
 
+       
+
+    }
 
 
+}

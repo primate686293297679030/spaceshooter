@@ -11,7 +11,7 @@ public struct PlayerComponent : IComponentData
 {
     public Entity entityHandle;
     public float3 position;
-
+   
    
   
 
@@ -66,7 +66,7 @@ public struct LevelComponent : IComponentData
 public struct isDeadTag: IComponentData
 {
 
-
+    public bool dead;
 
 }
 
