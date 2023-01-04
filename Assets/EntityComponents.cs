@@ -9,7 +9,7 @@ using Unity.Burst;
 [GenerateAuthoringComponent]
 public struct PlayerComponent : IComponentData
 {
-    public Entity entityHandle;
+   
     public float3 position;
    
    

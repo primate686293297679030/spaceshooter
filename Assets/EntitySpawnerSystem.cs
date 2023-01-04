@@ -12,30 +12,30 @@ public partial class EntitySpawnerSystem : SystemBase {
 
     private float spawnTimer;
     private Random random;
-    List<Entity> entities;
+   public List<Entity> entities;
     private Entity gameHandlerEntity;
+
     LevelComponent lvl;
     private float3[] spawnPoints = new float3[4]
     {
         math.float3(10,0,0),
         math.float3(-10,0,0),
-        math.float3(0,10,0),
-        math.float3(0,-10,0)
+        math.float3(0,7,0),
+        math.float3(0,-7,0)
 
     };
-    protected override void OnStartRunning() {
 
-        EntityManager em = World.DefaultGameObjectInjectionWorld.EntityManager;
+    protected override void OnCreate()
+    {
+        Enabled = false;
+    }
+    protected override void OnStartRunning() {
       
         random = new Random(56);
         entities = new List<Entity>();
-
-
-        gameHandlerEntity = World.GetExistingSystem<MoveSystem>().GameHandlerEntity;
-        lvl = EntityManager.GetComponentData<LevelComponent>(gameHandlerEntity);
-
     }
-    
+
+ 
     protected override void OnUpdate() {
         spawnTimer -= Time.DeltaTime;
 
@@ -54,10 +54,20 @@ public partial class EntitySpawnerSystem : SystemBase {
             );
             EntityManager.AddComponentData(spawnedEntity, new EnemyComponent());
           
-            EntityManager.SetName(spawnedEntity, "Enemy");
+         
 
            
         }
+
+        
+        if (HasComponent<isDeadTag>(World.GetExistingSystem<GameHandler>().playerEntity))
+        {
+          
+            Enabled = false;
+
+        }
+
+
     }
 
 }
