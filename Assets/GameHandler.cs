@@ -27,21 +27,28 @@ public partial class GameHandler: SystemBase
     private Entity player;
     public Entity GameHandlerEntity;
     public Entity playerEntity;
+ 
+
     protected override void OnCreate()
     {
-        Enabled = false;
+
+       // Enabled = false;
     }
     protected override void OnStartRunning()
     {
+ 
+        
         EntityManager em = World.DefaultGameObjectInjectionWorld.EntityManager;
         playerEntity = em.Instantiate(GetSingleton<PlayerPrefabComponent>().PlayerPrefab);
         GameHandlerEntity = em.Instantiate(GetSingleton<EntityGameHandler>().GameHandlerPrefab);
 
-      
-        em.AddComponentData(GameHandlerEntity, new LevelComponent
+        em.AddComponent<LevelComponent>(GameHandlerEntity);
+        
+        em.SetComponentData(GameHandlerEntity, new LevelComponent
         {
             wave = 1,
-            enemies = 10,
+            enemiesToSpawn=10,
+            enemies=0,
         });
 
         em.AddComponentData(playerEntity, new PlayerComponent()
@@ -66,21 +73,10 @@ public partial class GameHandler: SystemBase
  
     protected override void OnUpdate()
     {
-        
-
       
-        Entities.WithoutBurst().ForEach(( ref GameInit init ) =>
-        {
 
-            // EntityManager.SetComponentData(World.GetExistingSystem<MoveSystem>().playerEntity,  new Translation 
-            // {
-            //     Value = math.float3(0, 1, 0)
-            // });
-            //    EntityManager.RemoveComponent<GameInit>(World.GetExistingSystem<MoveSystem>().GameHandlerEntity);
-  
-        
+   
 
-        }).Run();
 
 
         if (HasComponent<isDeadTag>(World.GetExistingSystem<GameHandler>().playerEntity))

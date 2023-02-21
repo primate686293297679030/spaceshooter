@@ -69,7 +69,7 @@ public partial class CollisionTriggers : SystemBase
 
         public void Execute(TriggerEvent triggerEvent)
         {
-            Debug.Log("Collision triggered");
+           
 
             
             Entity entityA = triggerEvent.EntityA;
@@ -83,45 +83,30 @@ public partial class CollisionTriggers : SystemBase
 
             if (allProjectiles.HasComponent(entityA) && allEnemies.HasComponent(entityB))
             {
-
-
                 entityCommandBuffer.AddComponent(entityB, new isDeadTag());
                 Debug.Log("projectile destroyed");
                entityCommandBuffer.DestroyEntity(entityA);
-                //entityCommandBuffer.DestroyEntity(entityB);
-              
-
             }
 
 
         else if (allEnemies.HasComponent(entityA) && allProjectiles.HasComponent(entityB))
             {
-                Debug.Log("projectile destroyed2");
                 entityCommandBuffer.AddComponent(entityA, new isDeadTag());
                 entityCommandBuffer.DestroyEntity(entityB);
-              //  entityCommandBuffer.DestroyEntity(entityA);
 
             }
 
             if (allPlayers.HasComponent(entityA) && allEnemies.HasComponent(entityB))
             {
-
-
                 entityCommandBuffer.AddComponent(entityA, new isDeadTag());
-                Debug.Log("projectile destroyed");
-                entityCommandBuffer.DestroyEntity(entityB);
-                //entityCommandBuffer.DestroyEntity(entityB);
-
-
             }
 
 
             else if (allEnemies.HasComponent(entityA) && allPlayers.HasComponent(entityB))
             {
-                Debug.Log("projectile destroyed2");
+             
                 entityCommandBuffer.AddComponent(entityB, new isDeadTag());
-                entityCommandBuffer.DestroyEntity(entityA);
-                //  entityCommandBuffer.DestroyEntity(entityA);
+             
 
             }
 
